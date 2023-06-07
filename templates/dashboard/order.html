@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% block content %} 
+<div class="row" style="margin: 0 auto;">
+    <div class="col-12" style="padding:50px;">
+        <section id="order" class="product-area pt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="panel-body">
+                            <h2 style="text-align: center;" class="mb-15">Захиалга</h2>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form action="{% url 'order' %}" method="POST" enctype="multipart/form-data">
+                                      <div class="messages"  >
+                                        {% for message in messages %}
+                                            <div style="border-color:#8cd024;background-color: #8cd024; color: white;" class="alert alert-primary" {% if message.tags %}
+                                                class="{{ message.tags }}"{% endif %}>{{ message }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                    
+                                        {% endfor %}
+                                    </div>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="link">БАРААНЫ ХОЛБООС (LINK, URL) *:</label>
+                                            <input type="url" name="link" class="form-control" id="link" placeholder="Захиалах барааны линк" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">БАРААНЫ НЭР *:</label>
+                                            <input type="text" name="name" class="form-control" id="name" placeholder="Барааны нэр" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="quantity">Тоо ширхэг *:</label>
+                                                    <input type="text" name="quantity" class="form-control" id="quantity" placeholder="Тоо ширхэг" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="size">Размер *:</label>
+                                                    <input type="text" name="size" class="form-control" id="size" placeholder="Размер" required>
+                                                </div>
+                                            </div>
+                                
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="color">Өнгө *:</label>
+                                                    <input type="text" name="color" class="form-control" id="color" placeholder="Өнгө" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Тайлбар :</label>
+                                            <input type="text" name="description" class="form-control" id="description" placeholder="Тайлбар" >
+                                        </div>   
+                                        <div class="form-group">
+                                            <label for="address">Хаяг *:</label>
+                                            <textarea  name="address" class="form-control" id="address" placeholder="Хаяг" rows="4" cols="100"  required></textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="single-form form-group">
+                                                <button type="submit" class="main-btn " style="width:100%; margin: 0 auto;" >Бүртгүүлэх </button>
+                                            </div> <!-- single form -->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

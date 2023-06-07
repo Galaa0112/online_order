@@ -1,0 +1,256 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %} 
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="slider-hero">
+                    <div class="featured-carousel owl-carousel">
+                        {% for n in news %}
+                            <div class="item">
+                                <div class="work">
+                                    <div class="img d-flex align-items-center justify-content-center" style="background-image: url(media/{{n.picture}});">
+                                        <div class="text text-center">
+                                            <h2 class="animate-text" style="color:white;">{{n.title}}</h2>
+                                            <h5 class="animate-text" style="color:white;"><pre>{{n.text}}</pre></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}   
+                    </div>
+
+                    <div class="my-5 text-center">
+    
+              <ul class="thumbnail" style="border-radius: 15px;z-index: 1;">
+                {% for n in news %}
+                    <li class="img slider-img"><a href="#"><img style="width: 80px;height: 80px;object-fit: cover" src="media/{{n.picture}}" alt="Image" class="img-fluid"></a></li>
+                {% endfor %}   
+            </ul>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="service" class="services-area pt-125 pb-130" style="background-color: #fffaf6;">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-6">
+              <div class="section-title pb-30">
+                  <h5 class="mb-15">Захиалга</h5>
+                  <h3 class="title mb-15">Хэрхэн бараа захиалах вэ?</h3>
+                  <p>Хэрэглэгчийн хамгийн түгээмэл асуудаг асуултууд мөн системийг хэрхэн ашиглах зөөвөр зөвлөгөө
+                    Та хамгийн түрээнд тус вэб сайтад өөрийн утасны дугаараар бүртгүүлнэ.
+                    Түүний дараа хэрэглэгчийн хэсэгт орон бараа захиалах дээр дарж бараагаа захиалах юм..
+                    .</p>
+              </div> <!-- section title -->
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-6">
+              <div class="services-left mt-45">
+                  <div class="services">
+                      <img src="{% static 'images/order.jpg' %}" alt="">
+                  </div> <!-- services btn -->
+              </div> <!-- services left -->
+          </div>
+          <div class="col-lg-6">
+              
+              <div class="services-right mt-45">
+                  <div class="row justify-content-center">
+                      <div class="col-md-6 col-sm-8">
+                          <div class="single-services text-center">
+                              <div class="services-icon">
+                                  <i class="lni lni-road"></i>
+                              </div>
+                              <div class="services-content mt-20">
+                                  <h5 class="title mb-10">Бараа хаана явж байна вэ?</h5>
+                                  <p> Та манай барааны байршил шалгах хэсэгт орон захиалгын кодоо оруулан шалгах боломжтой.</p>
+                              </div>
+                          </div> <!-- single services -->
+                          
+                          <div class="single-services text-center mt-30">
+                              <div class="services-icon">
+                                  <i class="lni lni-enter"></i>
+                              </div>
+                              
+                      <button class="primary" onclick="window.dialog.showModal();">
+                              <div class="services-content mt-20">
+                                  <h5 class="title mb-10">Бүртгүүлэх заавар</h5>
+                                  <p> Та хэрвээ бүртгүүлж чадахгүй байгаа дараах заавартай танилцана уу.</p>
+                              </div></button>
+                          </div> <!-- single services -->
+                      </div>
+        <!-- БҮРТГҮҮЛЭХ ЗААВАР ДИАЛОГ -->
+          <dialog id="dialog">
+            <h2>Бүртгүүлэх заавар</h2>
+                <p>1. Хамгийн дээр байгаа <a href="{% url 'login' %}">нэвтрэх</a> гэсэн товчийг дарна.</p>
+                <p>2. Нэвтрэх болон бүртгүүлэх гэсэн tabbar-аас бүртгүүлэх гэдгийг сонгоно.</p>
+                <p>3. Өөрийн мэдээллээ оруулж бүртгүүлнэ.</p>
+                <p>4. Үүсгэсэн бүртгэлээрээ нэвтэрч орно</p>
+            <button onclick="window.dialog.close();" aria-label="close" class="x">❌</button>
+        </dialog>
+
+
+                      <div class="col-md-6 col-sm-8">
+                          <div class="single-services text-center mt-30">
+                              <div class="services-icon">
+                                  <i class="lni-coin"></i>
+                              </div>
+                              <div class="services-content mt-20">
+                                  <h5 class="title mb-10">Үнийн санал</h5>
+                                  <p> Барааны линкээ бидэнд илгээн барааны үнийг бодуулах боломжтой. </p>
+                              </div>
+                          </div> <!-- single services -->
+                          <a style="text-decoration: none;" id="#contact" href="#contact">  
+                          <div class="single-services text-center mt-30">
+                              <div class="services-icon">
+                                  <i class="lni-support"></i>
+                              </div>
+                              <div class="services-content mt-20">
+                                  <h5 class="title mb-10">Яаж холбогдох вэ?</h5>
+                                  <p> Бидэнтэй холбогдох бол та холбоо барих товч дээр дарж холбогдох мэдээлэлтэй танилцана уу.</p>
+                              </div>
+                          </div> <!-- single services -->
+                          </a>
+                      </div>
+                  </div> <!-- row -->
+              </div> <!-- services right -->
+          </div>
+      </div> <!-- row -->
+  </div> <!-- container -->
+</section>
+
+<section id="product" class="product-area pt-100 pb-130" style="background-color: white;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4">
+                <div class="collection-menu text-center mt-30">
+                    <h4 class="collection-tilte">Тусламж</h4>
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        {% for h in help %}
+                            <a class="{% if forloop.counter == 1 %}active{% endif %}" id="v-pills-{{h.id}}-tab" data-toggle="pill" href="#v-pills-{{h.id}}" role="tab" aria-controls="v-pills-furniture" aria-selected="true">{{h.title}}</a>
+                        {% endfor %}   
+                      
+                    </div> <!-- nav -->
+                </div> <!-- collection menu -->
+            </div>
+            <div class="col-lg-9 col-md-8">
+                <div class="tab-content" id="v-pills-tabContent">
+                    {% for h in help %}
+                    <div class="tab-pane fade {% if forloop.counter == 1 %}show active{% endif %}" id="v-pills-{{h.id}}" role="tabpanel" aria-labelledby="v-pills-{{h.id}}-tab">
+                        {% for s in h.step %}
+                            <div class="an text-start mt-30">
+                             <h5 class="product-title">{{s.title}}</h5>
+                             {{s.body|safe|escape}}
+                            </div>
+                        {% endfor %}   
+                      </div> <!-- tab pane -->
+                {% endfor %}   
+                </div> <!-- tab content --> 
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+  </section>
+
+<!-- ХОЛБОО БАРИХ ХЭСЭГ -->
+<section id="contact" class="contact-area pt-115">
+  <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-lg-6">
+              <div class="contact-title text-center">
+                  <h2 class="title">Холбоо барих</h2>
+              </div> <!-- contact title -->
+          </div>
+      </div> <!-- row -->
+      <div class="contact-box mt-70">
+          <div class="row">
+              <div class="col-lg-4">
+                  <div class="contact-info pt-25">
+                      <h4 class="info-title">Холбоо барих</h4>
+                      <ul>
+                          <li>
+                              <div class="single-info mt-30">
+                                  <div class="info-icon">
+                                      <i class="lni-phone-handset"></i>
+                                  </div>
+                                  <div class="info-content">
+                                      <p>{{base.phone}}</p>
+                                  </div>
+                              </div> <!-- single info -->
+                          </li>
+                          <li>
+                              <div class="single-info mt-30">
+                                  <div class="info-icon">
+                                      <i class="lni-envelope"></i>
+                                  </div>
+                                  <div class="info-content">
+                                      <p>{{base.email}}</p>
+                                  </div>
+                              </div> <!-- single info -->
+                          </li>
+                          <li>
+                              <div class="single-info mt-30">
+                                  <div class="info-icon">
+                                      <i class="lni-home"></i>
+                                  </div>
+                                  <div class="info-content">
+                                      <p>{{base.address}}</p>
+                                  </div>
+                              </div> <!-- single info -->
+                          </li>
+                      </ul>
+                  </div>
+              </div> 
+              <div class="col-lg-8">
+                  <div class="contact-form">
+                    {% for message in messages %}
+                    <div style="border-color:#8cd024;background-color: #8cd024; color: white;" class="alert alert-primary" {% if message.tags %}
+                        class="{{ message.tags }}"{% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+                      <form id="contact-form" action="{% url 'msg' %}" method="post" data-toggle="validator">
+                        {% csrf_token %}
+                        <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="single-form form-group">
+                                      <input type="text" name="name" placeholder="Нэр" data-error="Name is required." required="required">
+                                      <div class="help-block with-errors"></div>
+                                  </div> <!-- single form -->
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="single-form form-group">
+                                      <input type="tel" name="phone" placeholder="Утас"  data-error="Valid email is required." required="required">
+                                      <div class="help-block with-errors"></div>
+                                  </div> <!-- single form -->
+                              </div>
+                              <div class="col-lg-12">
+                                  <div class="single-form form-group">
+                                      <textarea name="message" placeholder="Санал хүсэлт" data-error="Please,leave us a message." required="required"></textarea>
+                                      <div class="help-block with-errors"></div>
+                                  </div> <!-- single form -->
+                              </div>
+                              <p class="form-message"></p>
+                              <div class="col-lg-12">
+                                  <div class="single-form form-group">
+                                      <button class="main-btn" type="submit">Илгээх</button>
+                                  </div> <!-- single form -->
+                              </div>
+                          </div> <!-- row -->
+                      </form>
+                  </div> <!-- row -->
+              </div> 
+          </div> <!-- row -->
+      </div> <!-- contact box -->
+  </div> <!-- container -->
+</section>
+
+</div>
+{% endblock %}

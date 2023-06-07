@@ -1,0 +1,103 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} Zooming CLS {% endblock %}
+
+
+{% block content %} 
+<div class="row" style="margin: 0 auto;">
+  <div class="col-12" style="padding:50px;">
+      <section id="signupAndsignin" class="product-area pt-100">
+        <div class="container">
+          <div class="row">
+          <div class="col-md-6 col-md-offset-3 border-box" >
+            <div class="panel panel-login">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <a href="#" class="active" id="login-form-link">Нэвтрэх</a>
+                  </div>
+                  <div class="col-xs-6">
+                    <a href="#" id="register-form-link">Бүртгүүлэх</a>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <div class="panel-body">
+                
+                <div class="row">
+                  <div class="col-lg-12">
+                   
+                      <div class="contact-form">
+                        <form id="login-form" action="{% url 'login' %}" method="POST">
+                          <div class="messages"  >
+                            {% for message in messages %}
+                                <div style="border-color:#8cd024;background-color: #8cd024; color: white;" class="alert alert-primary" {% if message.tags %}
+                                    class="{{ message.tags }}"{% endif %}>{{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                        
+                            {% endfor %}
+                        </div>
+                          {% csrf_token %}
+                              <div class="row">
+                                  <div class="col-lg-12">
+                                      <div class="single-form form-group">
+                                          <input type="text" class="form-control" name="username" placeholder="Утас" data-error="Утасны дугаараа оруулна уу." required>
+                                          <div class="help-block with-errors"></div>
+                                      </div> <!-- single form -->
+                                  </div>
+                                  <div class="col-lg-12">
+                                      <div class="single-form form-group">
+                                          <input type="password" class="form-control" name="password" data-error="Нууц үг оруулна уу." placeholder="Нууц үг" required>
+                                          <div class="help-block with-errors"></div>
+                                      </div> <!-- single form -->
+                                  </div>
+                                
+                                  <p class="form-message"></p>
+                                  <div class="col-lg-12">
+                                      <div class="single-form form-group">
+                                          <button type="submit" class="main-btn " style="width:100%; margin: 0 auto;" >Нэврэх </button>
+                                      </div> <!-- single form -->
+                                  </div>
+                                  
+                              </div> <!-- row -->
+                          </form>
+                      </div> <!-- row -->
+                      <form id="register-form" action="{% url 'signup' %}" method="POST" enctype="multipart/form-data" style="display: none;">
+                        {% csrf_token %}
+                        <div class="form-group">
+                
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Нэр" required>
+                        </div>
+                        <div class="form-group">
+                     
+                            <input type="text" name="username" class="form-control" id="phone" placeholder="Утас" required>
+                        </div>
+                        <div class="form-group">
+                          
+                            <input type="password" name="password1" class="form-control" id="password1" placeholder="Нууц үг" required>
+                        </div>
+                        <div class="form-group">
+            
+                            <input type="password" name="password2" class="form-control" id="password2" placeholder="Нууц үг давтах" required>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="single-form form-group">
+                              <button type="submit" class="main-btn " style="width:100%; margin: 0 auto;" >Бүртгүүлэх </button>
+                          </div> <!-- single form -->
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+{% load order_tags %}
+{% block content %} 
+<div class="row" style="margin: 0 auto;">
+    <div class="col-12" style="padding:50px;">
+        <section id="order" class="product-area pt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="panel-body">
+                            <h2 style="text-align: center;" class="mb-15">Захиалга засах</h2>
+                            <div class="alert alert-warning" id="alert-text-div" role="alert">
+                                <p id="alert-text"> </p>
+                              </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form action="{% url 'update' order.id %}" method="POST" enctype="multipart/form-data">
+                                      <div class="messages"  >
+                                        {% for message in messages %}
+                                            <div style="border-color:#8cd024;background-color: #8cd024; color: white;" class="alert alert-primary" {% if message.tags %}
+                                                class="{{ message.tags }}"{% endif %}>{{ message }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                    
+                                        {% endfor %}
+                                    </div>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="link">БАРААНЫ ХОЛБООС (LINK, URL) *:</label>
+                                            <input type="url" name="link" class="form-control edit-input" id="link" placeholder="Захиалах барааны линк" value="{{order.link}}" required>
+                                            <input name="status" id="status" hidden value="{{order.status}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">БАРААНЫ НЭР *:</label>
+                                            <input type="text" name="name" class="form-control edit-input" id="name" placeholder="Барааны нэр" value="{{order.name}}" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="quantity">Тоо ширхэг *:</label>
+                                                    <input type="text" name="quantity" class="form-control edit-input" id="quantity" placeholder="Тоо ширхэг" value="{{order.quantity}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="size">Размер *:</label>
+                                                    <input type="text" name="size" class="form-control edit-input" id="size" placeholder="Размер" value="{{order.size}}" required>
+                                                </div>
+                                            </div>
+                                
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label for="color">Өнгө *:</label>
+                                                    <input type="text" name="color" class="form-control edit-input" id="color" placeholder="Өнгө" value="{{order.color}}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Тайлбар :</label>
+                                            <input type="text" name="description" class="form-control edit-input" id="description" placeholder="Тайлбар" value="{{order.description}}" >
+                                        </div>   
+                                        <div class="form-group">
+                                            <label for="address">Хаяг *:</label>
+                                            <textarea  name="address" class="form-control edit-input" id="address" placeholder="Хаяг" rows="4" cols="100" value="{{order.address}}"  required>{{order.address}}</textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="single-form form-group">
+                                                <button type="submit" class="main-btn " id="edit-btn" style="width:100%; margin: 0 auto;" >Хадгалах </button>
+                                            </div> <!-- single form -->
+                                        </div>
+                                    </form>
+                                   
+                                    <div class="col-lg-12">
+                                        <div class="single-form form-group">
+                                            <a class="main-btn" style="width:100%;color: #8cd024; background: white;" id="cancel-btn" href="{% url 'order_cancel' order.id %}" onclick="return confirm('Та захиалгаа цуцлахтаа итгэлтэй байна уу?')">Цуцлах</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+
+  
+{% block scripts %}
+<script>
+    
+    const status = document.getElementById("status").value;
+    const edit = document.getElementById("edit-btn");
+    const text = document.getElementById("alert-text");
+    const cancel = document.getElementById("cancel-btn");
+    
+    const alertDiv = document.getElementById("alert-text-div");
+    console.log("STATUS "+ status)
+    const edit_inputs = document.getElementsByClassName("edit-input");
+    for (const edit_input of edit_inputs) {
+        if(status == "N"){
+            alertDiv.hidden = true;
+        }
+        else if( status == "Q"){
+            text.innerHTML = "Мэдээлэл буруу байгаа тул мэдээллээ засаад хадгалах товч дарах үед төлөв нь шинэ болж өөрчлөгдөхийг анхаарна уу!"
+            edit_input.readOnly = false;
+        }
+        else if( status == "C" ){
+            edit_input.readOnly = true;
+            edit.hidden = true;
+            text.innerHTML = "Үнэ бодогдсон тул засварлах боломжгүй"
+        }
+        else if( status == "O" ){
+            edit_input.readOnly = true;
+            cancel.hidden = true;
+            edit.hidden = true;
+            text.innerHTML = "Захиалга хийгдсэн тул засварлах болон цуцлах боломжгүй"
+            cancel
+        }
+        else if(status == "F" ){
+            edit_input.readOnly = true;
+            cancel.hidden = true;
+            edit.hidden = true;
+            text.innerHTML = "Цуцлагдсан тул засварлах боломжгүй"
+        }
+        else if( status == "D"){
+            edit_input.readOnly = true;
+            edit.hidden = true;
+            text.innerHTML = "Захиалга хүргэгдсэн тул засварлах болон цуцлах боломжгүй"
+        }  else if( status == "B" ){
+            edit_input.readOnly = true;
+            cancel.hidden = true;
+            edit.hidden = true;
+            text.innerHTML = "Буцаагдсан тул засварлах болон цуцлах боломжгүй"
+        }
+        else {
+            edit_input.readOnly = true;
+            cancel.hidden = true;
+            edit.hidden = true;
+            text.innerHTML = "Төлбөр төлөгдсөн тул засварлах болон цуцлах боломжгүй"
+        }
+
+        // ('N', 'Шинэ'),
+        // ('F', 'Цуцалсан'),
+        // ('D', 'Дууссан'),
+        // ('B', 'Буцаагдсан'),
+        // ('O', 'Захиалсан'),
+        // ('C', 'Үнэ бодогдсон'),
+        // ('P', 'Төлбөр төлөгдсөн'),
+        // ('Q', 'Мэдээлэл буруу'),
+        
+    }
+    
+</script>
+    
+{% endblock %}
