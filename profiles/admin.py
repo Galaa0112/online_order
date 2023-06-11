@@ -104,7 +104,7 @@ class NewsAdmin(admin.ModelAdmin):
     list_display = ('title', 'picture', 'text','link','sequence','created_at','deleted_at')
     list_filter = ("created_at","deleted_at")
     search_fields = ('id','title')
-
+  
 
 @admin.register(BaseInfo)
 class BaseInfoAdmin(admin.ModelAdmin):
@@ -120,5 +120,21 @@ class HelpStepAdmin(admin.ModelAdmin):
 class HelpStepAdmin(admin.ModelAdmin):
     fields = ('title', 'help', 'body','sequence')
     list_display = ('title', 'help')
+
+    
+
+    
+@admin.register(AboutUs)
+class AboutUsAdmin(admin.ModelAdmin):
+    fields = ('title','body','sequence')
+    list_display = ('title', 'sequence')
+
+    
+
+    
+@admin.register(UseOfTerms)
+class UseOfTermsAdmin(admin.ModelAdmin):
+    fields = ('title','body','sequence')
+    list_display = ('title', 'sequence')
 
     

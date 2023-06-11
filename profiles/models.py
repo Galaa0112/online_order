@@ -56,8 +56,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(null=True,max_length=200,verbose_name='Утас',unique=True,blank=True)
     name = models.CharField(_('Нэр'), unique=False, max_length=200, blank=True, null=True)
 
-    password = models.CharField(max_length=10000)
-    confirm_password = models.CharField(max_length=10000)
+    password = models.CharField(max_length=7000)
+    confirm_password = models.CharField(max_length=7000)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
@@ -140,7 +140,7 @@ class MessageRequest(models.Model):
 class News(models.Model):
     picture =  models.ImageField(_("Зураг"), upload_to=PathAndRename(
         'picture/'), blank=True, max_length=2500)
-    link = models.CharField(_('Холбоос'), null=True,  max_length=200, blank=True)
+    link = models.URLField(_('Холбоос'),null=True, blank=True,max_length=1000)
     title = models.CharField(_('Гарчиг'), null=True,max_length=1000, blank=True)
     text = models.TextField(_('Текст'), default='', null=True, blank=True,)
     sequence = models.IntegerField(_('Дараалал'), null=True)
@@ -189,6 +189,34 @@ class HelpStep(models.Model):
         db_table = 'help_step'
         verbose_name = _("Тусламж алхам")
         verbose_name_plural = _("Тусламж алхам")
+
+    def __str__(self):
+        return self.title
+
+
+
+class AboutUs(models.Model):
+    title = models.CharField(_('Гарчиг'), null=True,max_length=1000, blank=True)
+    body = RichTextUploadingField(verbose_name=_("Контент"),blank=True, null=True, )
+    sequence = models.IntegerField(_('Дараалал'), null=True)
+
+    class Meta:
+        db_table = 'about_us'
+        verbose_name = _("Бидний тухай")
+        verbose_name_plural = _("Бидний тухай")
+
+    def __str__(self):
+        return self.title
+
+class UseOfTerms(models.Model):
+    title = models.CharField(_('Гарчиг'), null=True,max_length=1000, blank=True)
+    body = RichTextUploadingField(verbose_name=_("Контент"),blank=True, null=True, )
+    sequence = models.IntegerField(_('Дараалал'), null=True)
+
+    class Meta:
+        db_table = 'use_of_terms'
+        verbose_name = _("Үйлчилгээний нөхцөл")
+        verbose_name_plural = _("Үйлчилгээний нөхцөл")
 
     def __str__(self):
         return self.title

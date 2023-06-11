@@ -50,15 +50,15 @@ class Index(View):
     
 class TermsView(View):
     def get(self,request):
-        context = {
-        }
-        return render(request,'terms.html',context)
+        terms = UseOfTerms.objects.order_by("sequence").all()
+        base = BaseInfo.objects.first()
+        return render(request,'terms.html',{'terms':terms,'base':base})
 
 class AboutUsView(View):
     def get(self,request):
-        context = {
-        }
-        return render(request,'about_us.html',context)
+        base = BaseInfo.objects.first()
+        about = AboutUs.objects.order_by("sequence").all()
+        return render(request,'about_us.html',{'about':about,'base':base})
 
     
 class RegisterView(View):
@@ -102,9 +102,9 @@ class RegisterView(View):
 
 class LoginView(View):
     def get(self,request):
-        context = {
-        }
-        return render(request,'login.html',context)
+        
+        base = BaseInfo.objects.first()
+        return render(request,'login.html',{'base':base})
 
     def post(self,request,*args,**kwargs):
         detect = request.POST.get('username')
@@ -139,10 +139,8 @@ class ProfileView(View):
         return super().dispatch(request,*args,**kwargs)
     def get(self,request):
         user = request.user
-        context = {
-            'user':user
-        }
-        return render(request,'dashboard/profile.html',context)
+        base = BaseInfo.objects.first()
+        return render(request,'dashboard/profile.html',{'user':user, 'base':base})
     
     def post(self,request,*args,**kwargs):
         user = request.user
@@ -159,10 +157,9 @@ class ChangePasswordView(View):
         return super().dispatch(request,*args,**kwargs)
     def get(self,request):
         user = request.user
-        context = {
-            'user':user
-        }
-        return render(request,'dashboard/change_password.html',context)
+        base = BaseInfo.objects.first()
+        return render(request,'dashboard/change_password.html',{'user':user, 'base':base})
+    
     def post(self,request,*args,**kwargs):
         user = request.user
         pw1 = request.POST.get('pw1')
@@ -188,10 +185,8 @@ class OrderView(View):
         return super().dispatch(request,*args,**kwargs)
     def get(self,request):
         user = request.user
-        context = {
-            'user':user
-        }
-        return render(request,'dashboard/order.html',context)
+        base = BaseInfo.objects.first()
+        return render(request,'dashboard/order.html',{'user':user,'base':base})
     
     def post(self,request,*args,**kwargs):
         user = request.user
@@ -260,7 +255,8 @@ class OrderListView(View):
         except EmptyPage:
             order_list = paginator.page(paginator.num_pages)
 
-        return render(request,'dashboard/order_list.html',{'orders':order_list})
+        base = BaseInfo.objects.first()
+        return render(request,'dashboard/order_list.html',{'orders':order_list,'base':base})
     
     def post(self,request,*args,**kwargs):
         user = request.user

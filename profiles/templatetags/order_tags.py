@@ -30,12 +30,3 @@ def get_texts(text):
     else: 
         return text
     
-
-@register.filter(name="get_len")
-def get_len(array):
-    return len(array)
-
-
-@register.filter()
-def range(min=5):
-    return range(min)
