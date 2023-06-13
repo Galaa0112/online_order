@@ -73,7 +73,7 @@
                             <td data-label="Тоо ширхэг">{{order.quantity}}</td>
                             <td data-label="Холбоос"> <a href="{{order.link}}" data-animation="fadeInUp" target="_blank" data-delay="1.5s"><i class="lni-link"></i></a></td>
                             <td data-label="Тайлбар">{{order.description}}</td>
-                            <td data-label="Бодсон үнэ">{{order.cost|get_text}}</td>
+                            <td data-label="Бодсон үнэ">{{order|get_calculate}}</td>
                             <td data-label="Админы тайлбар">{{order.admin_description|get_text}}</td>
                             <td data-label="Засах">
                                 <a href="{% url 'update' order.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

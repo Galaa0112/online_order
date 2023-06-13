@@ -110,14 +110,12 @@ class Order(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name=_("User"), blank=True,
                              related_name="order")
   
-    @property
     def get_link(self):
         if self.link:
-            
-            html = f'<a target="_blank" href="{self.link}">link<i class="lni-link"></i></a>'
-            # html = f'<a href="{self.link}" data-animation="fadeInUp" target="_blank" data-delay="1.5s"><i class="lni-link"></i></a>'
+            html = f'<a target="_blank" href="{self.link}"><img src="/media/picture/link-icon.png" width="23" /></a>'
             return mark_safe(html)
-        return ""
+        return '-'
+    get_link.short_description ='Холбоос'
 
     class Meta:
         db_table = 'order'
@@ -146,6 +144,17 @@ class News(models.Model):
     sequence = models.IntegerField(_('Дараалал'), null=True)
     created_at = models.DateTimeField(_('Илгээсэн огноо'),auto_now_add=True)
     deleted_at = models.DateTimeField(_('Устгасан'),blank=True, null=True)
+    
+    def photo(self):
+        return mark_safe('<img src="{}" width="100" />'.format(self.picture.url))
+    
+    def get_link(self):
+        if self.link:
+            html = f'<center><a target="_blank" href="{self.link}"><img src="/media/picture/link-icon.png" width="23" /></a></center>'
+            return mark_safe(html)
+        return mark_safe(f'<center>-</center>')
+    photo.short_description = 'Зураг'
+    get_link.short_description ='Холбоос'
     class Meta:
         db_table = 'news'
         verbose_name = _("Мэдээ мэдээлэл")
@@ -220,3 +229,15 @@ class UseOfTerms(models.Model):
 
     def __str__(self):
         return self.title
+    
+    
+class Hansh(models.Model):
+    hansh = models.FloatField(_('Ханш'),  blank=True, null=True)
+
+    class Meta:
+        db_table = 'hansh'
+        verbose_name = _("Ханш")
+        verbose_name_plural = _("Ханш")
+
+    def __str__(self):
+        return str(self.hansh)

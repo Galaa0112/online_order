@@ -30,3 +30,18 @@ def get_texts(text):
     else: 
         return text
     
+
+@register.filter(name="get_calculate")
+def get_calc(order):
+    cost  = 0 if order.cost ==None else order.cost
+    scost  = 0 if order.shipping_cost ==None else order.shipping_cost
+    dcost  = 0 if order.delivery_cost ==None else order.delivery_cost
+    fee  = 0 if order.service_fee ==None else order.service_fee
+    if order.hansh ==None:
+        return '0'
+    else:
+        price = (cost + scost + dcost + fee)*order.hansh
+        currency = "{:,.2f}".format(price)
+        return str(currency)+"₮"
+    
+    

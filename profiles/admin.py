@@ -45,15 +45,29 @@ class UserAdmin(ParanoidAdmin, BaseUserAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     fields = ('name', 'link', 'quantity','size','color','description', 'address','user',"status",'hansh','cost','shipping_cost','delivery_cost','service_fee',"admin_description")
-    list_display = ('id','name', 'get_link', 'quantity','size','color','description','created_at', 'address',"user","status")
+    readonly_fields = ('hansh','user')
+    list_display = ('id','name', 'get_link',"status", 'quantity','size','color','description','created_at', 'address',"user")
     list_filter = ("created_at","status",("created_at", DateRangeFilterBuilder()),)
     search_fields = ('id','name','link','user__username')
-    actions = ['finish','paid']
+    actions = ['finish','paid','done']
+    def save_model(self, request, obj, form, change):
+        if obj.status == 'C':
+            hansh = Hansh.objects.first()
+            
+            if hansh == None:
+                h = 1.0
+            else:
+                h = hansh.hansh
+            obj.hansh = h
+        super().save_model(request, obj, form, change)
+
 
     def finish(self,request,queryset):
         queryset.update(status="O")
     def paid(self,request,queryset):
         queryset.update(status="P")
+    def done(self,request,queryset):
+        queryset.update(status="D")
    
       
     def get_actions(self, request):
@@ -64,6 +78,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     finish.short_description = 'Захиалсан'
     paid.short_description = 'Төлбөр төлөгдсөн'
+    done.short_description = 'Дууссан'
     delete_selected.short_description = u'Устгах'
     # def has_change_permission(self, request, obj=None):
     #     if request.user.is_admin == True:
@@ -101,9 +116,10 @@ class MessageRequestAdmin(admin.ModelAdmin):
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     fields = ('title', 'picture', 'text','link','sequence','deleted_at')
-    list_display = ('title', 'picture', 'text','link','sequence','created_at','deleted_at')
+    list_display = ('title', 'photo','get_link','text','sequence','created_at','deleted_at')
     list_filter = ("created_at","deleted_at")
     search_fields = ('id','title')
+
   
 
 @admin.register(BaseInfo)
@@ -136,5 +152,12 @@ class AboutUsAdmin(admin.ModelAdmin):
 class UseOfTermsAdmin(admin.ModelAdmin):
     fields = ('title','body','sequence')
     list_display = ('title', 'sequence')
+
+    
+    
+@admin.register(Hansh)
+class HanshAdmin(admin.ModelAdmin):
+    fields = ('hansh',)
+    list_display = ('hansh',)
 
     
