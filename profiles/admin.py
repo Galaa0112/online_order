@@ -19,7 +19,7 @@ class UserAdmin(ParanoidAdmin, BaseUserAdmin):
 
 
     fieldsets = (
-        (None, {'fields': ('name','username', 'password')}),
+        (None, {'fields': ('name','username', 'password','is_admin')}),
            )
 
     add_fieldsets = (
