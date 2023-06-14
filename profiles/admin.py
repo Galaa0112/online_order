@@ -36,8 +36,16 @@ class UserAdmin(ParanoidAdmin, BaseUserAdmin):
        
         ('Appointment Type', {'fields': ('is_admin', )}),
     )
-
-
+    def save_model(self, request, obj, form, change):
+        if obj.is_admin:
+            obj.is_staff = True
+            obj.is_superuser = True
+            obj.is_active = True
+        else:
+            obj.is_staff = False
+            obj.is_superuser = False
+            
+        super().save_model(request, obj, form, change)
     ordering = ('username',)
     filter_horizontal = ()
 
