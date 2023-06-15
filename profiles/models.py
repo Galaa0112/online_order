@@ -137,7 +137,7 @@ class MessageRequest(models.Model):
 
 class News(models.Model):
     picture =  models.ImageField(_("Зураг"), upload_to=PathAndRename(
-        'picture/'), blank=True, max_length=2500)
+        'picture/'),null=True,  blank=True, max_length=2500)
     link = models.URLField(_('Холбоос'),null=True, blank=True,max_length=1000)
     title = models.CharField(_('Гарчиг'), null=True,max_length=1000, blank=True)
     text = models.TextField(_('Текст'), default='', null=True, blank=True,)
@@ -146,6 +146,9 @@ class News(models.Model):
     deleted_at = models.DateTimeField(_('Устгасан'),blank=True, null=True)
     
     def photo(self):
+        return ''
+        if self.picture ==None:
+            return ''
         return mark_safe('<img src="{}" width="100" />'.format(self.picture.url))
     
     def get_link(self):

@@ -1,6 +1,7 @@
 
 {% extends 'base/base.html' %}
 {% load static %}
+{% load order_tags %}
 {% block content %} 
 <section class="ftco-section">
     <div class="container">
@@ -13,9 +14,9 @@
                                 <div class="work">
                                     <div class="img d-flex align-items-center justify-content-center" style="background-image: url(media/{{n.picture}});">
                                         <div class="text text-center">
-                                            <h2 class="animate-text" style="color:white;">{{n.title}}</h2>
+                                            <h2 class="animate-text" style="color:white;">{{n.title|get_title}}</h2>
                                             <h5 class="animate-text" style="color:white;"><pre>{{n.text}}</pre></h5>
-                                            {% if n.link != none %}
+                                            {% if n.link != None  %}
                                                 <a href="{{n.link}}" style="padding: 10px; border-radius: 6px; background-color: white;" target="_blank">Дэлгэрэнгүй</a>
                                             {% endif %}
                                         </div>
@@ -29,7 +30,15 @@
     
               <ul class="thumbnail" style="border-radius: 15px;z-index: 1;">
                 {% for n in news %}
-                    <li class="img slider-img"><a href="#"><img style="width: 80px;height: 80px;object-fit: cover" src="media/{{n.picture}}" alt="Image" class="img-fluid"></a></li>
+                    <li class="img slider-img">
+                        <a href="#">
+                            {% if n.picture == None or n.picture == "" %}
+                            <img style="width: 80px;height: 80px;object-fit: cover" src="media/picture/logo.png" alt="Image" class="img-fluid">
+                            {% else %}
+                            <img style="width: 80px;height: 80px;object-fit: cover" src="media/{{n.picture}}" alt="Image" class="img-fluid">
+                            {% endif %}
+                        </a>
+                    </li>
                 {% endfor %}   
             </ul>
             </div>

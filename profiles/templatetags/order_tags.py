@@ -31,6 +31,12 @@ def get_texts(text):
         return text
     
 
+@register.filter(name="get_title")
+def get_titles(text):
+    if text == None:
+        return ''
+    else: 
+        return text
 @register.filter(name="get_calculate")
 def get_calc(order):
     cost  = 0 if order.cost ==None else order.cost
