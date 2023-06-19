@@ -6,7 +6,7 @@ from django_paranoid.admin import ParanoidAdmin
 from django.contrib.auth.models import Group
 from django.contrib.admin.actions import delete_selected
 from rangefilter.filters import DateRangeFilterBuilder, DateTimeRangeFilterBuilder, NumericRangeFilterBuilder
-
+import datetime
 admin.site.unregister(Group)
 
 @admin.register(User)
@@ -52,13 +52,33 @@ class UserAdmin(ParanoidAdmin, BaseUserAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    fields = ('name', 'link', 'quantity','size','color','description', 'address','user',"status",'hansh','cost','shipping_cost','delivery_cost','service_fee',"admin_description")
-    readonly_fields = ('hansh','user')
-    list_display = ('id','name', 'get_link',"status", 'quantity','size','color','description','created_at', 'address',"user")
+    fields = ('order_no','name', 'link', 'quantity','size','color','description', 'address','user',"status",'hansh','cost','shipping_cost','delivery_cost','service_fee','ub_shipping_cost',"admin_description")
+    readonly_fields = ('order_no','hansh','user')
+    list_display = ('order_no','name', 'get_link',"price","status", 'quantity','size','color','description','created_at', 'address',"user")
     list_filter = ("created_at","status",("created_at", DateRangeFilterBuilder()),)
-    search_fields = ('id','name','link','user__username')
+    search_fields = ('order_no','name','link','user__username')
     actions = ['finish','paid','done']
+    def price(self, obj):
+        cost  = 0 if obj.cost ==None else obj.cost
+        scost  = 0 if obj.shipping_cost ==None else obj.shipping_cost
+        dcost  = 0 if obj.delivery_cost ==None else obj.delivery_cost
+        fee  = 0 if obj.service_fee ==None else obj.service_fee
+        ucost  = 0 if obj.ub_shipping_cost ==None else obj.ub_shipping_cost
+        if obj.hansh ==None:
+            return '0'
+        else:
+            price = (cost + scost + dcost + fee+ucost)*obj.hansh
+            currency = "{:,.2f}".format(price)
+            return str(currency)+"₮"
+
+
     def save_model(self, request, obj, form, change):
+        if obj.order_no == None:
+            count = Order.objects.count()+1
+            year = datetime.date.today().year
+            order_no = str(year)[2:4]+ str(count).zfill(4)
+            obj.order_no=order_no
+
         if obj.status == 'C':
             hansh = Hansh.objects.first()
             
@@ -67,6 +87,7 @@ class OrderAdmin(admin.ModelAdmin):
             else:
                 h = hansh.hansh
             obj.hansh = h
+            
         super().save_model(request, obj, form, change)
 
 
@@ -84,6 +105,7 @@ class OrderAdmin(admin.ModelAdmin):
             del actions['delete_selected']
         return actions
 
+    price.short_description = 'Бодогдсон үнэ'
     finish.short_description = 'Захиалсан'
     paid.short_description = 'Төлбөр төлөгдсөн'
     done.short_description = 'Дууссан'
@@ -123,8 +145,8 @@ class MessageRequestAdmin(admin.ModelAdmin):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('title', 'picture', 'text','link','sequence','deleted_at')
-    list_display = ('title', 'photo','get_link','text','sequence','created_at','deleted_at')
+    fields = ('title', 'picture', 'text','link','position','sequence','deleted_at')
+    list_display = ('title', 'photo','get_link','text','sequence','position','created_at','deleted_at')
     list_filter = ("created_at","deleted_at")
     search_fields = ('id','title')
 

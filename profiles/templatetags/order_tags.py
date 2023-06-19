@@ -43,10 +43,11 @@ def get_calc(order):
     scost  = 0 if order.shipping_cost ==None else order.shipping_cost
     dcost  = 0 if order.delivery_cost ==None else order.delivery_cost
     fee  = 0 if order.service_fee ==None else order.service_fee
+    ucost  = 0 if order.ub_shipping_cost ==None else order.ub_shipping_cost
     if order.hansh ==None:
         return '0'
     else:
-        price = (cost + scost + dcost + fee)*order.hansh
+        price = (cost + scost + dcost + fee+ucost)*order.hansh
         currency = "{:,.2f}".format(price)
         return str(currency)+"₮"
     

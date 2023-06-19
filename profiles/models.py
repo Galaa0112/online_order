@@ -83,6 +83,7 @@ class Order(models.Model):
         ('P', 'Төлбөр төлөгдсөн'),
         ('Q', 'Мэдээлэл буруу'),
     )
+    order_no = models.CharField(_('Захиалгын дугаар'),  max_length=10, blank=True, null=True)
     link = models.URLField(_('Холбоос'),max_length=2000, null=True)
     name = models.CharField(_('Нэр'),  max_length=200, blank=True, null=True)
     quantity = models.IntegerField(_('Тоо ширхэг'), null=True)
@@ -99,10 +100,10 @@ class Order(models.Model):
         _('Хэрэглэгчид илгээх тайлбар'), default='', null=True, blank=True,)
     hansh = models.FloatField(_('Ханш'),  blank=True, null=True)
     cost = models.FloatField(_('Үнэ'),  blank=True, null=True)
-    shipping_cost = models.FloatField(_('Хятад доторх тээврийн зардал'),default=0,  blank=True, null=True)
+    shipping_cost = models.FloatField(_('Хятад доторх тээврийн үнэ'),default=0,  blank=True, null=True)
+    ub_shipping_cost = models.FloatField(_('Эрээнээс-Улаанбаатар үнэ'),default=0,  blank=True, null=True)
     delivery_cost = models.FloatField(_('Хүргэлтийн үнэ'),  default=0, blank=True, null=True)
     service_fee = models.FloatField(_('Үйлчилгээний хураамж'), default=0, blank=True, null=True)
-
     created_at = models.DateTimeField(_('Бүртгэгдсэн'),auto_now_add=True)
     updated_at = models.DateTimeField(_('Засагдсан'),auto_now=True)
     deleted_at = models.DateTimeField(_('Устгасан'),blank=True, null=True)
@@ -136,18 +137,23 @@ class MessageRequest(models.Model):
         verbose_name_plural = _("Санал хүсэлт")
 
 class News(models.Model):
+    POSITION = (
+        ('L', 'Зүүн'),
+        ('R', 'Баруун'),
+        ('C', 'Төв'),
+    )
     picture =  models.ImageField(_("Зураг"), upload_to=PathAndRename(
         'picture/'),null=True,  blank=True, max_length=2500)
     link = models.URLField(_('Холбоос'),null=True, blank=True,max_length=1000)
     title = models.CharField(_('Гарчиг'), null=True,max_length=1000, blank=True)
     text = models.TextField(_('Текст'), default='', null=True, blank=True,)
     sequence = models.IntegerField(_('Дараалал'), null=True)
+    position = models.CharField(_('Текстийн байрлал'),max_length=1, choices=POSITION, default='C')
     created_at = models.DateTimeField(_('Илгээсэн огноо'),auto_now_add=True)
     deleted_at = models.DateTimeField(_('Устгасан'),blank=True, null=True)
     
     def photo(self):
-        return ''
-        if self.picture ==None:
+        if self.picture ==None or self.picture == "":
             return ''
         return mark_safe('<img src="{}" width="100" />'.format(self.picture.url))
     

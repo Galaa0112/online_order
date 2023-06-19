@@ -67,13 +67,32 @@
                     {% for order in orders %}
                         <tr>
                             <td data-label="Огноо" style="border:0px">{{order.created_at|date:'Y-m-d H:i'}}</td>
-                            <td data-label="Захиалгын дугаар">{{order.id}}</td>
+                            <td data-label="Захиалгын дугаар">{{order.order_no}}</td>
                             <td data-label="Барааны нэр">{{order.name}}</td>
                             <td data-label="Төлөв">{{order.status|get_status}}</td>
                             <td data-label="Тоо ширхэг">{{order.quantity}}</td>
                             <td data-label="Холбоос"> <a href="{{order.link}}" data-animation="fadeInUp" target="_blank" data-delay="1.5s"><i class="lni-link"></i></a></td>
                             <td data-label="Тайлбар">{{order.description}}</td>
-                            <td data-label="Бодсон үнэ">{{order|get_calculate}}</td>
+                            <td data-label="Бодсон үнэ">
+                                
+                                <div  
+                                title="Үнийн задаргаа харах"
+                                class="btn btn-secondary order-link" 
+                                style="cursor: pointer;"
+                                data-toggle="tooltip" 
+                                data-placement="bottom" 
+                                data-cost="{{ order.cost }}" 
+                                data-shipping_cost="{{ order.shipping_cost }}" 
+                                data-delivery_cost="{{ order.delivery_cost }}" 
+                                data-service_fee="{{ order.service_fee }}" 
+                                data-ub_shipping_cost="{{ order.ub_shipping_cost }}" 
+                                data-hansh="{{ order.hansh }}" 
+                                data-order_no="{{ order.order_no }}" >
+                                {{order|get_calculate}}
+                                       
+                                        
+                                </div>
+                            </td>
                             <td data-label="Админы тайлбар">{{order.admin_description|get_text}}</td>
                             <td data-label="Засах">
                                 <a href="{% url 'update' order.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -90,6 +109,18 @@
                
                     </tbody>
                 </table>
+                 <!-- БҮРТГҮҮЛЭХ ЗААВАР ДИАЛОГ -->
+          <dialog id="pdialog">
+            <h2 id="order_no"></h2>
+            <p id="cost"></p>
+            <p id="shipping_cost"></p>
+            <p id="ub_shipping_cost"></p>
+            <p id="delivery_cost"></p>
+            <p id="service_fee"></p>
+            <p id="hansh"></p>
+               
+            <button onclick="window.pdialog.close();" aria-label="close" class="x">❌</button>
+        </dialog>
                 <div style="text-align: center;">                
                     <div class="pg">
                     {% if orders.has_other_pages %}
@@ -111,4 +142,22 @@
     </div>
 </div>
   
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    $('.order-link').click(function(){
+        document.getElementById("order_no").innerHTML ="Захиалгын дугаар:" + $(this).data('order_no');
+        document.getElementById("cost").innerHTML ="Үнэ:" + ($(this).data('cost')=='None'?0:$(this).data('cost'))+"¥";
+        document.getElementById("shipping_cost").innerHTML ="Хятад доторх тээврийн үнэ:" + ($(this).data('shipping_cost')=="None"?0:$(this).data('shipping_cost'))+"¥";
+        document.getElementById("ub_shipping_cost").innerHTML ="Эрээнээс-Улаанбаатар үнэ:" + ($(this).data('ub_shipping_cost')=="None"?0:$(this).data('ub_shipping_cost'))+"¥";
+        document.getElementById("delivery_cost").innerHTML ="Хүргэлтийн үнэ:" + ($(this).data('delivery_cost')=='None'?0:$(this).data('delivery_cost'))+"¥";
+        document.getElementById("service_fee").innerHTML ="Үйлчилгээний хураамж:" + ( $(this).data('service_fee')=='None'?0: $(this).data('service_fee'))+"¥";
+        document.getElementById("hansh").innerHTML ="Ханш:" +( $(this).data('hansh')=='None'?0: $(this).data('hansh'))+"¥";
+        window.pdialog.showModal();
+    });
+</script>
+    
 {% endblock %}

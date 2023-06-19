@@ -13,14 +13,57 @@
                             <div class="item">
                                 <div class="work">
                                     <div class="img d-flex align-items-center justify-content-center" style="background-image: url(media/{{n.picture}});">
-                                        <div class="text text-center">
-                                            <h2 class="animate-text" style="color:white;">{{n.title|get_title}}</h2>
-                                            <h5 class="animate-text" style="color:white;"><pre>{{n.text}}</pre></h5>
-                                            {% if n.link != None  %}
-                                                <a href="{{n.link}}" style="padding: 10px; border-radius: 6px; background-color: white;" target="_blank">Дэлгэрэнгүй</a>
-                                            {% endif %}
+                                        {% if n.position == 'C'  %}
+                                        <div class="row" style="width: 100%;" >
+                                            <div class="col col-lg-3"></div>
+                                            <div class="col col-lg-6">
+                                                <h2 class="title-tag">{{n.title|get_title}}</h2>
+                                                <pre class="pre-tag">
+                                                    <p style="color: white;">{{n.text}}</p>
+                                                </pre>
+                                        {% if n.link != None  %}
+                                            <div style="text-align: center;">
+                                                <a href="{{n.link}}" class="link-tag" target="_blank">Дэлгэрэнгүй</a>
+                                            </div>
+                                        {% endif %}
+                                            </div>
+                                            <div class="col col-lg-3"></div>
+                                            </div>
+                                            
+                                        {% elif n.position == 'L'  %}
+                                            <div class="text" style="width: 100%;padding-left: 10px;">
+                                                <div class="col col-lg-4">
+                                                    <h2 class="title-tag" >{{n.title|get_title}}</h2>
+                                                        <pre class="pre-tag">
+                                                            <p style="color: white;">{{n.text}}</p>
+                                                        </pre>
+                                                {% if n.link != None  %}
+                                                    <div style="text-align: center;">
+                                                        <a href="{{n.link}}" class="link-tag" target="_blank">Дэлгэрэнгүй</a>
+                                                    </div>
+                                                {% endif %}
+                                                </div>
+                                                <div class="col col-lg-8"></div>
+                                            </div>
+                                        
+                                        {% else %}
+                                        <div class="row" style="width: 100%;" >
+                                            <div class="col col-lg-7"></div>
+                                            <div class="col col-lg-5">
+                                                <h2 class="title-tag">{{n.title|get_title}}</h2>
+                                                        <pre class="pre-tag">
+                                                            <p style="color: white;">{{n.text}}</p>
+                                                        </pre>
+                                                {% if n.link != None  %}
+                                                    <div style="text-align: center;">
+                                                        <a href="{{n.link}}" class="link-tag" target="_blank">Дэлгэрэнгүй</a>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                           
                                         </div>
-                                    </div>
+                                        {% endif %}
+                                        </div>
                                 </div>
                             </div>
                         {% endfor %}   

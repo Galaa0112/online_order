@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login , logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from profiles.models import  *
+import datetime
+
 # model import 
 from django.db.models import CharField
 from django.db.models.functions import Lower
@@ -197,9 +199,12 @@ class OrderView(View):
         color = request.POST.get('color') if request.POST.get('color')!=None else ''
         description = request.POST.get('description') if request.POST.get('description')!=None else ''
         address = request.POST.get('address') if request.POST.get('address')!=None else ''
-
+        count = Order.objects.count()+1
+        year = datetime.date.today().year
+        order_no = str(year)[2:4]+ str(count).zfill(4)
     
         order_info ={
+            "order_no":order_no,
             "user": user,
             "link": link,
             "name": name,
@@ -236,9 +241,6 @@ class OrderListView(View):
             year = date[0:4]
             month = date[5:7]    
             day = date[8:10]    
-            print("YEAR ", year)
-            print("MONTH ", month)
-            print("DAY ", day)
             query = query.filter(
                 created_at__year =year,
                 created_at__month =month,
@@ -258,33 +260,6 @@ class OrderListView(View):
         base = BaseInfo.objects.first()
         return render(request,'dashboard/order_list.html',{'orders':order_list,'base':base})
     
-    def post(self,request,*args,**kwargs):
-        user = request.user
-        link = request.POST.get('link') if request.POST.get('link')!=None else ''
-        name = request.POST.get('name') if request.POST.get('name')!=None else ''
-        quantity = request.POST.get('quantity') if request.POST.get('quantity')!=None else ''
-        size = request.POST.get('size') if request.POST.get('size')!=None else ''
-        color = request.POST.get('color') if request.POST.get('color')!=None else ''
-        description = request.POST.get('description') if request.POST.get('description')!=None else ''
-        address = request.POST.get('address') if request.POST.get('address')!=None else ''
-
-    
-        order_info ={
-            "user": user,
-            "link": link,
-            "name": name,
-            "quantity":quantity,
-            "size":size,
-            "color": color,
-            "description": description,
-            "address": address
-        }
-        order = Order(**order_info)
-        order.save()
-        messages.success(request, 'Таны захиалга амжилттай бүртгэгдлээ.')
-        return redirect ('/order')
-                              
-               
 class OrderUpdateView(View):
     @method_decorator(login_required(login_url='login'))
     def dispatch(self,request,*args,**kwargs):
