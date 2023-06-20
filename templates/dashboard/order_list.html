@@ -112,13 +112,49 @@
                  <!-- БҮРТГҮҮЛЭХ ЗААВАР ДИАЛОГ -->
           <dialog id="pdialog">
             <h2 id="order_no"></h2>
-            <p id="cost"></p>
-            <p id="shipping_cost"></p>
-            <p id="ub_shipping_cost"></p>
-            <p id="delivery_cost"></p>
-            <p id="service_fee"></p>
-            <p id="hansh"></p>
-               
+            <table class="table table-hover" style="border:1px solid #ddd;">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Юань</th>
+                    <th scope="col">Төгрөг</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="col">Үнэ</th>
+                    <td><p id="cost"></p></td>
+                    <td><p id="tcost"></p></td>
+                </tr>
+                    <tr>
+                    <th scope="col">Хятад доторх тээврийн үнэ</th>
+                    <td><p id="shipping_cost"></p></td>
+                    <td><p id="tshipping_cost"></p></td>
+                </tr>    
+                <tr>
+                    <th scope="col">Эрээнээс-Улаанбаатар үнэ</th>
+                    <td><p id="ub_shipping_cost"></p></td>
+                    <td><p id="tub_shipping_cost"></p></td>
+                </tr>    
+                <tr>
+                    <th scope="col">Хүргэлтийн үнэ</th>
+                    <td><p id="delivery_cost"></p></td>
+                    <td><p id="tdelivery_cost"></p></td>
+                </tr>    
+                <tr>
+                    <th scope="col">Үйлчилгээний хураамж</th>
+                    <td><p id="service_fee"></p></td>
+                    <td><p id="tservice_fee"></p></td>
+                </tr>    
+                <tr>
+                    <th scope="col">Нийт</th> 
+                    <td><p id="total"></p></td>
+                    <td><p id="ttotal"></p></td>
+                </tr>   
+                </tbody>
+            </table>
+            
+            <h3 id="hansh"></h3>
             <button onclick="window.pdialog.close();" aria-label="close" class="x">❌</button>
         </dialog>
                 <div style="text-align: center;">                
@@ -149,13 +185,38 @@
 {% block scripts %}
 <script>
     $('.order-link').click(function(){
+        var hansh = ($(this).data('hansh')=='None'?0: $(this).data('hansh'));
+
+
+        var cost = ($(this).data('cost')=='None'?0: $(this).data('cost'));
+        var shipping_cost = ( $(this).data('shipping_cost')=='None'?0: $(this).data('shipping_cost'));
+        var ub_shipping_cost = ( $(this).data('ub_shipping_cost')=='None'?0: $(this).data('ub_shipping_cost'));
+        var delivery_cost = ( $(this).data('delivery_cost')=='None'?0: $(this).data('delivery_cost'));
+        var service_fee = ( $(this).data('service_fee')=='service_fee'?0: $(this).data('service_fee'));
+
+        var total =parseFloat(cost) +parseFloat(shipping_cost)+parseFloat(ub_shipping_cost)+parseFloat(delivery_cost)+parseFloat(service_fee);
+
         document.getElementById("order_no").innerHTML ="Захиалгын дугаар:" + $(this).data('order_no');
-        document.getElementById("cost").innerHTML ="Үнэ:" + ($(this).data('cost')=='None'?0:$(this).data('cost'))+"¥";
-        document.getElementById("shipping_cost").innerHTML ="Хятад доторх тээврийн үнэ:" + ($(this).data('shipping_cost')=="None"?0:$(this).data('shipping_cost'))+"¥";
-        document.getElementById("ub_shipping_cost").innerHTML ="Эрээнээс-Улаанбаатар үнэ:" + ($(this).data('ub_shipping_cost')=="None"?0:$(this).data('ub_shipping_cost'))+"¥";
-        document.getElementById("delivery_cost").innerHTML ="Хүргэлтийн үнэ:" + ($(this).data('delivery_cost')=='None'?0:$(this).data('delivery_cost'))+"¥";
-        document.getElementById("service_fee").innerHTML ="Үйлчилгээний хураамж:" + ( $(this).data('service_fee')=='None'?0: $(this).data('service_fee'))+"¥";
-        document.getElementById("hansh").innerHTML ="Ханш:" +( $(this).data('hansh')=='None'?0: $(this).data('hansh'))+"¥";
+        document.getElementById("hansh").innerHTML ="Ханш: 1₮=" +hansh+"¥";
+
+        document.getElementById("cost").innerHTML =cost+"¥";
+        document.getElementById("tcost").innerHTML =(cost* hansh)+"₮";
+        
+        document.getElementById("shipping_cost").innerHTML =shipping_cost+"¥";
+        document.getElementById("tshipping_cost").innerHTML =(shipping_cost* hansh)+"₮";
+
+        document.getElementById("ub_shipping_cost").innerHTML =ub_shipping_cost+"¥";
+        document.getElementById("tub_shipping_cost").innerHTML =(ub_shipping_cost* hansh)+"₮";
+
+        document.getElementById("delivery_cost").innerHTML =delivery_cost+"¥";
+        document.getElementById("tdelivery_cost").innerHTML =(delivery_cost* hansh)+"₮";
+
+        document.getElementById("service_fee").innerHTML =service_fee+"¥";
+        document.getElementById("tservice_fee").innerHTML =(service_fee* hansh)+"₮";
+       
+        document.getElementById("total").innerHTML =Intl.NumberFormat().format(( total))+"¥";
+        document.getElementById("ttotal").innerHTML =Intl.NumberFormat().format(( total*hansh))+"₮";
+        
         window.pdialog.showModal();
     });
 </script>

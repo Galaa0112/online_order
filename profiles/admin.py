@@ -58,6 +58,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ("created_at","status",("created_at", DateRangeFilterBuilder()),)
     search_fields = ('order_no','name','link','user__username')
     actions = ['finish','paid','done']
+    
     def price(self, obj):
         cost  = 0 if obj.cost ==None else obj.cost
         scost  = 0 if obj.shipping_cost ==None else obj.shipping_cost
@@ -74,7 +75,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if obj.order_no == None:
-            count = Order.objects.count()+1
+            count = Order.objects.last().id+1
             year = datetime.date.today().year
             order_no = str(year)[2:4]+ str(count).zfill(4)
             obj.order_no=order_no
@@ -110,31 +111,10 @@ class OrderAdmin(admin.ModelAdmin):
     paid.short_description = 'Төлбөр төлөгдсөн'
     done.short_description = 'Дууссан'
     delete_selected.short_description = u'Устгах'
-    # def has_change_permission(self, request, obj=None):
-    #     if request.user.is_admin == True:
-    #         return True
-    #     else:
-    #         return False
-
-    # def has_add_permission(self, request, obj=None):
-    #     if request.user.is_admin == True:
-    #         return True
-    #     else:
-    #         return False
-    
-    # def has_delete_permission(self, request, obj=None):
-    #     if request.user.is_admin == True:
-    #         return True
-    #     else:
-    #         return False
-
-    # def has_view_permission(self, request, obj=None):
-    #     if request.user.is_admin == True:
-    #         return True
-    #     else:
-    #         return False
-
-    
+    class Media:
+        js = ('js/order_admin.js',)
+   
+   
 @admin.register(MessageRequest)
 class MessageRequestAdmin(admin.ModelAdmin):
     fields = ('name', 'phone', 'message',)

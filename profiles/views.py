@@ -199,7 +199,7 @@ class OrderView(View):
         color = request.POST.get('color') if request.POST.get('color')!=None else ''
         description = request.POST.get('description') if request.POST.get('description')!=None else ''
         address = request.POST.get('address') if request.POST.get('address')!=None else ''
-        count = Order.objects.count()+1
+        count = Order.objects.last().id+1
         year = datetime.date.today().year
         order_no = str(year)[2:4]+ str(count).zfill(4)
     
