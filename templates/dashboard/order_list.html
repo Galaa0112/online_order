@@ -223,7 +223,7 @@
         var total =parseFloat(cost) +parseFloat(shipping_cost)+parseFloat(ub_shipping_cost)+parseFloat(delivery_cost)+parseFloat(service_fee);
 
         document.getElementById("order_no").innerHTML ="Захиалгын дугаар:" + $(this).data('order_no');
-        document.getElementById("hansh").innerHTML ="Ханш: 1₮=" +hansh+"¥";
+        document.getElementById("hansh").innerHTML ="Ханш: 1¥=" +hansh+"₮";
 
         document.getElementById("cost").innerHTML =cost+"¥";
         document.getElementById("tcost").innerHTML =(cost* hansh)+"₮";
