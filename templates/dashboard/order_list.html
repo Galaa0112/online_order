@@ -93,7 +93,22 @@
                                         
                                 </div>
                             </td>
-                            <td data-label="Админы тайлбар">{{order.admin_description|get_text}}</td>
+                            <td data-label="Админы тайлбар">
+                                <div 
+                                    class="desc-link" 
+                                    title="Тайлбар харах"
+                                    data-toggle="tooltip" 
+                                    data-desc="{{order.admin_description}}"
+                                    data-placement="bottom" 
+                                    style="overflow: hidden;
+                                            cursor: pointer;
+                                            display: -webkit-box;
+                                            -webkit-line-clamp: 5; 
+                                            line-clamp: 5; 
+                                            -webkit-box-orient: vertical;">
+                                    {{order.admin_description|get_text}}
+                                </div>
+                            </td>
                             <td data-label="Засах">
                                 <a href="{% url 'update' order.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -109,7 +124,7 @@
                
                     </tbody>
                 </table>
-                 <!-- БҮРТГҮҮЛЭХ ЗААВАР ДИАЛОГ -->
+        <!-- ҮНИЙН ЗАДАРГАА ДИАЛОГ -->
           <dialog id="pdialog">
             <h2 id="order_no"></h2>
             <table class="table table-hover" style="border:1px solid #ddd;">
@@ -153,10 +168,21 @@
                 </tr>   
                 </tbody>
             </table>
-            
-            <h3 id="hansh"></h3>
+            <div class="row" style="justify-content: space-between;">
+                    <h3 id="hansh"></h3>
+                    <h3>Данс: 5000878987</h3>
+
+            </div>
             <button onclick="window.pdialog.close();" aria-label="close" class="x">❌</button>
         </dialog>
+
+        <!-- ҮНИЙН ЗАДАРГАА ДИАЛОГ -->
+        <dialog id="ddialog">
+            <h2>Админы тайлбар</h2>
+            <p id="desc"></p>
+            <button onclick="window.ddialog.close();" aria-label="close" class="x">❌</button>
+        </dialog>
+
                 <div style="text-align: center;">                
                     <div class="pg">
                     {% if orders.has_other_pages %}
@@ -218,6 +244,11 @@
         document.getElementById("ttotal").innerHTML =Intl.NumberFormat().format(( total*hansh))+"₮";
         
         window.pdialog.showModal();
+    });
+    $('.desc-link').click(function(){
+        var desc = ($(this).data('desc')=='None'?'-': $(this).data('desc'));
+        document.getElementById("desc").innerHTML =desc
+        window.ddialog.showModal();
     });
 </script>
     
