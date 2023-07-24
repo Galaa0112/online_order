@@ -1,4 +1,7 @@
+from typing import Dict, Optional
 from django.contrib import admin
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from profiles.models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -72,7 +75,16 @@ class OrderAdmin(admin.ModelAdmin):
             currency = "{:,.2f}".format(price)
             return str(currency)+"₮"
 
-
+    
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        order = Order.objects.filter(id=object_id).first()
+        hansh = Hansh.objects.first()
+        if order is not None and hansh is not None:
+            if order.status == 'N':
+                order.hansh = hansh.hansh
+                order.save()
+        extra_context = extra_context or {}
+        return super(OrderAdmin, self).change_view(request, object_id, form_url=form_url, extra_context=extra_context)
     def save_model(self, request, obj, form, change):
         if obj.order_no == None:
             count = Order.objects.last().id+1
