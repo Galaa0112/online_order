@@ -1,54 +1,66 @@
 $(function ($) {
-    $('.url').find( "a" ).attr('target', 'blank');
+
+
+    // LINK IIG OORCHILSON HESEG START
+    var pLink = $('.field-link').find( "p" );
+    var urlInput =  $('.field-link').find( "input" )
+    var link =urlInput.val()
+    pLink.text('')
+    pLink.append(urlInput)
+    pLink.append("<a style='margin-left:5px;' href='"+link+"' target='blank'><img src='/media/picture/link-icon.png' width='20' /></a>")
+    // LINK IIG OORCHILSON HESEG END
+    
+    // STATUS ZAHIALSAN BOLOH UYED READ ONLY BOLGOH HESEG START
+    if('D'== $('#id_status').val() || 'O'== $('#id_status').val()){
+        $('input').attr('readonly', 'readonly').css('border','none');
+    }
+    // STATUS ZAHIALSAN BOLOH UYED READ ONLY BOLGOH HESEG END
+
+    total()
+
 
     var cost = $('#id_cost').val()
     if (isNaN(cost) || cost == undefined || cost == "") {
         cost = 0;
     }
-    var shippingCost = $('#id_shipping_cost').val()
-    var deliveryCost = $('#id_delivery_cost').val()
-    var serviceCost = $('#id_service_fee').val()
-    var ubCost = $('#id_ub_shipping_cost').val()
-    var hansh = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-    
-    $('#id_cost').after("<span id='yCost' style='margin-left: 10px;'>"+Intl.NumberFormat().format(cost*hansh)+"¥</span>")
-    $('#id_shipping_cost').after("<span id='yShippingCost' style='margin-left: 10px;'>"+Intl.NumberFormat().format(shippingCost*hansh)+"¥</span>")
-    $('#id_delivery_cost').after("<span id='yDeliveryCost' style='margin-left: 10px;'>"+Intl.NumberFormat().format(deliveryCost*hansh)+"¥</span>")
-    $('#id_service_fee').after("<span id='yServiceCost' style='margin-left: 10px;'>"+Intl.NumberFormat().format(serviceCost*hansh)+"¥</span>")
-    $('#id_ub_shipping_cost').after("<span id='yUbCost' style='margin-left: 10px;'>"+Intl.NumberFormat().format(ubCost*hansh)+"¥</span>")
     
     $('#id_cost').on('input', function() {
-        var c = $('#id_cost').val()
-        if (isNaN(c) || c == undefined || c == "") { c = 0;}
-        var h = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-        $('#yCost').text(Intl.NumberFormat().format(c*h)+"¥")
+        total()
     })
     
     $('#id_shipping_cost').on('input', function() {
-        var c = $('#id_shipping_cost').val()
-        if (isNaN(c) || c == undefined || c == "") { c = 0;}
-        var h = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-        $('#yShippingCost').text(Intl.NumberFormat().format(c*h)+"¥")
+        total()
     })
       
     $('#id_delivery_cost').on('input', function() {
-        var c = $('#id_delivery_cost').val()
-        if (isNaN(c) || c == undefined || c == "") { c = 0;}
-        var h = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-        $('#yDeliveryCost').text(Intl.NumberFormat().format(c*h)+"¥")
+        total()
     })
 
     $('#id_service_fee').on('input', function() {
-        var c = $('#id_service_fee').val()
-        if (isNaN(c) || c == undefined || c == "") { c = 0;}
-        var h = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-        $('#yServiceCost').text(Intl.NumberFormat().format(c*h)+"¥")
+        total()
     })
 
     $('#id_ub_shipping_cost').on('input', function() {
-        var c = $('#id_ub_shipping_cost').val()
-        if (isNaN(c) || c == undefined || c == "") { c = 0;}
-        var h = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
-        $('#yUbCost').text(Intl.NumberFormat().format(c*h)+"¥")
+        total()
     })
+    function total() {
+        var cost = $('#id_cost').val()
+        var shippingCost = $('#id_shipping_cost').val()
+        var deliveryCost = $('#id_delivery_cost').val()
+        var serviceCost = $('#id_service_fee').val()
+        var ubCost = $('#id_ub_shipping_cost').val()
+        var hansh = parseFloat($('.field-hansh').find( "div:last-child" ).find( "div:last-child" ).text());
+        if (isNaN(cost) || cost == undefined || cost == "") { cost= 0;}
+        if (isNaN(shippingCost) || shippingCost == undefined || shippingCost == "") { shippingCost= 0;}
+        if (isNaN(deliveryCost) || deliveryCost == undefined || deliveryCost == "") { deliveryCost= 0;}
+        if (isNaN(serviceCost) || serviceCost == undefined || serviceCost == "") { serviceCost= 0;}
+        var total = parseFloat(cost.toString()) + parseFloat(shippingCost.toString())+parseFloat(deliveryCost.toString())+parseFloat(serviceCost.toString())+parseFloat(ubCost.toString())
+        var tugrik  = total * hansh
+        $('.field-status').before("<div class='form-row field-total'><div><label id='id_total_cost' for='id_total_cost'>Нийт:</label></div></div>");
+        $('#id_total_cost').after("<span>"+Intl.NumberFormat().format(tugrik)+"₮</span>");
+        $('#id_total_cost').after("<p>"+Intl.NumberFormat().format(total)+"¥</p>");
+
+      }
+      
  })
+ 

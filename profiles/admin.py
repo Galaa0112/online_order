@@ -55,7 +55,7 @@ class UserAdmin(ParanoidAdmin, BaseUserAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    fields = ('order_no','name', 'link', 'quantity','size','color','description', 'address','user',"status",'hansh','cost','shipping_cost','delivery_cost','service_fee','ub_shipping_cost',"admin_description")
+    fields = ('order_no','name', 'link', 'quantity','size','color','description', 'address','user','hansh','cost','shipping_cost','ub_shipping_cost','delivery_cost','service_fee',"status","admin_description")
     readonly_fields = ('order_no','hansh','user')
     list_display = ('order_no','name', 'get_link',"price","status", 'quantity','size','color','description','created_at', 'address',"user")
     list_filter = ("created_at","status",("created_at", DateRangeFilterBuilder()),)
