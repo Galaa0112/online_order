@@ -52,13 +52,12 @@ $(function ($) {
         var total = parseFloat(cost.toString()) + parseFloat(shippingCost.toString())+parseFloat(deliveryCost.toString())+parseFloat(serviceCost.toString())+parseFloat(ubCost.toString())
         var tugrik  = total * hansh
         if(isFirst){
-            $('.field-status').before("<div class='form-row field-total'><div><label id='id_total_cost' for='id_total_cost'>Нийт:</label></div></div>");
-            $('#id_total_cost').after("<span id='total_y'>"+Intl.NumberFormat().format(tugrik)+"₮</span>");
-            $('#id_total_cost').after("<p id='total_t'>"+Intl.NumberFormat().format(total)+"¥</p>");
+            $('.field-status').before("<div class='form-row field-total'><div><label for='id_total_cost_t'>Нийт төгрөг:</label><span id='total_t'>"+Intl.NumberFormat().format(tugrik)+"₮</span></div></div>");
+            $('.field-status').before("<div class='form-row field-total'><div><label for='id_total_cost_y'>Нийт юань:</label><span id='total_y'>"+Intl.NumberFormat().format(total)+"¥</span></div></div>");
         }
         else{
-            $('#total_y').text(total+"¥")
-            $('#total_t').text(tugrik+"₮")
+            $('#total_y').text(Intl.NumberFormat().format(total)+"¥")
+            $('#total_t').text(Intl.NumberFormat().format(tugrik)+"₮")
         }
       }
       
