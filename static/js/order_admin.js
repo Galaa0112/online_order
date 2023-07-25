@@ -16,34 +16,29 @@ $(function ($) {
     }
     // STATUS ZAHIALSAN BOLOH UYED READ ONLY BOLGOH HESEG END
 
-    total()
+    total(true)
 
-
-    var cost = $('#id_cost').val()
-    if (isNaN(cost) || cost == undefined || cost == "") {
-        cost = 0;
-    }
-    
     $('#id_cost').on('input', function() {
-        total()
+        total(false)
     })
     
     $('#id_shipping_cost').on('input', function() {
-        total()
+        total(false)
     })
       
     $('#id_delivery_cost').on('input', function() {
-        total()
+        total(false)
     })
 
     $('#id_service_fee').on('input', function() {
-        total()
+        total(false)
     })
 
     $('#id_ub_shipping_cost').on('input', function() {
-        total()
+        total(false)
     })
-    function total() {
+
+    function total(isFirst) {
         var cost = $('#id_cost').val()
         var shippingCost = $('#id_shipping_cost').val()
         var deliveryCost = $('#id_delivery_cost').val()
@@ -56,10 +51,15 @@ $(function ($) {
         if (isNaN(serviceCost) || serviceCost == undefined || serviceCost == "") { serviceCost= 0;}
         var total = parseFloat(cost.toString()) + parseFloat(shippingCost.toString())+parseFloat(deliveryCost.toString())+parseFloat(serviceCost.toString())+parseFloat(ubCost.toString())
         var tugrik  = total * hansh
-        $('.field-status').before("<div class='form-row field-total'><div><label id='id_total_cost' for='id_total_cost'>Нийт:</label></div></div>");
-        $('#id_total_cost').after("<span>"+Intl.NumberFormat().format(tugrik)+"₮</span>");
-        $('#id_total_cost').after("<p>"+Intl.NumberFormat().format(total)+"¥</p>");
-
+        if(isFirst){
+            $('.field-status').before("<div class='form-row field-total'><div><label id='id_total_cost' for='id_total_cost'>Нийт:</label></div></div>");
+            $('#id_total_cost').after("<span id='total_y'>"+Intl.NumberFormat().format(tugrik)+"₮</span>");
+            $('#id_total_cost').after("<p> id='total_t'"+Intl.NumberFormat().format(total)+"¥</p>");
+        }
+        else{
+            $('#total_y').text(total+"¥")
+            $('#total_t').text(tugrik+"₮")
+        }
       }
       
  })
