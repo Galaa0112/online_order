@@ -25,7 +25,7 @@ CharField.register_lookup(Lower)
 class Index(View):
     def get(self, request,*args,**kwargs):
         if request.user.is_authenticated:
-            return redirect('profile')
+            return redirect('list')
         news = News.objects.filter(deleted_at=None).order_by("sequence").all()
         base = BaseInfo.objects.first()
         helpData = []
