@@ -86,7 +86,7 @@ class Order(models.Model):
     order_no = models.CharField(_('Захиалгын дугаар'),  max_length=10, blank=True, null=True)
     link = models.URLField(_('Холбоос'),max_length=2000, null=True)
     name = models.CharField(_('Нэр'),  max_length=200, blank=True, null=True)
-    quantity = models.IntegerField(_('Тоо ширхэг'), null=True)
+    quantity = models.CharField(_('Тоо ширхэг'),max_length=200, null=True)
     size = models.CharField(_('Размер'),  max_length=50, blank=True, null=True)
     color = models.CharField(_('Өнгө'),  max_length=100, blank=True, null=True)
     description = models.TextField(
